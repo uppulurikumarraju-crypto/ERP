@@ -113,7 +113,16 @@ function AuthPage() {
                     <Input id="si-email" name="email" type="email" autoComplete="username" inputMode="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} required value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="si-pw">Password</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="si-pw">Password</Label>
+                      <button
+                        type="button"
+                        onClick={() => { setForgotEmail(signInEmail); setForgotOpen(true); }}
+                        className="text-xs font-medium text-primary hover:underline"
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
                     <Input id="si-pw" name="password" type="password" autoComplete="current-password" required value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} />
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
