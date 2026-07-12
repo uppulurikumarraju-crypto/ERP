@@ -83,14 +83,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         content:
           "Modern store management for kirana and grocery shops. Track sales, inventory, customers and profit in one clean dashboard.",
       },
-      { property: "og:title", content: "Smart Kirana — Store Management" },
+      { property: "og:title", content: "Smart Kirana — Store Management & Analytics" },
       {
         property: "og:description",
         content:
-          "Sales, inventory, customers and profit in one clean dashboard.",
+          "Modern store management for kirana and grocery shops. Track sales, inventory, customers and profit in one clean dashboard.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Smart Kirana — Store Management & Analytics" },
+      { name: "twitter:description", content: "Modern store management for kirana and grocery shops. Track sales, inventory, customers and profit in one clean dashboard." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d7dec1a5-4a5e-4128-9511-951d498ad2b9/id-preview-1abe8028--c8322097-9b3d-4272-adf0-c246f4352b79.lovable.app-1783868615843.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/d7dec1a5-4a5e-4128-9511-951d498ad2b9/id-preview-1abe8028--c8322097-9b3d-4272-adf0-c246f4352b79.lovable.app-1783868615843.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
