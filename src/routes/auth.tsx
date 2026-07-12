@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { toast } from "sonner";
 import { Store } from "lucide-react";
 
@@ -28,6 +29,21 @@ function AuthPage() {
   const [signUpPassword, setSignUpPassword] = useState("");
   const [shopName, setShopName] = useState("");
   const [fullName, setFullName] = useState("");
+  const [forgotOpen, setForgotOpen] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotLoading, setForgotLoading] = useState(false);
+
+  async function handleForgot(e: React.FormEvent) {
+    e.preventDefault();
+    setForgotLoading(true);
+    const { error } = await supabase.auth.resetPasswordForEmail(forgotEmail, {
+      redirectTo: `${window.location.origin}/reset-password`,
+    });
+    setForgotLoading(false);
+    if (error) return toast.error(error.message);
+    toast.success("Check your email for the reset link");
+    setForgotOpen(false);
+  }
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -97,7 +113,16 @@ function AuthPage() {
                     <Input id="si-email" name="email" type="email" autoComplete="username" inputMode="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} required value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="si-pw">Password</Label>
+                    <div className="flex items-center justify-between">
+                      <Label htmlFor="si-pw">Password</Label>
+                      <button
+                        type="button"
+                        onClick={() => { setForgotEmail(signInEmail); setForgotOpen(true); }}
+                        className="text-xs font-medium text-primary hover:underline"
+                      >
+                        Forgot password?
+                      </button>
+                    </div>
                     <Input id="si-pw" name="password" type="password" autoComplete="current-password" required value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} />
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
@@ -133,6 +158,41 @@ function AuthPage() {
           </CardContent>
         </Card>
       </div>
+
+      <Dialog open={forgotOpen} onOpenChange={setForgotOpen}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>Reset your password</DialogTitle>
+            <DialogDescription>
+              Enter the email on your account and we'll send you a reset link.
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={handleForgot} className="space-y-4" name="forgot-password" method="post" action="#">
+            <div className="space-y-2">
+              <Label htmlFor="fp-email">Email</Label>
+              <Input
+                id="fp-email"
+                name="email"
+                type="email"
+                autoComplete="username"
+                inputMode="email"
+                autoCapitalize="none"
+                autoCorrect="off"
+                spellCheck={false}
+                required
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+              />
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setForgotOpen(false)}>Cancel</Button>
+              <Button type="submit" disabled={forgotLoading || !forgotEmail}>
+                {forgotLoading ? "Sending..." : "Send reset link"}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
