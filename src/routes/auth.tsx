@@ -91,14 +91,14 @@ function AuthPage() {
               </TabsList>
 
               <TabsContent value="signin">
-                <form onSubmit={handleSignIn} className="mt-4 space-y-4">
+                <form onSubmit={handleSignIn} className="mt-4 space-y-4" name="signin" method="post" action="#">
                   <div className="space-y-2">
                     <Label htmlFor="si-email">Email</Label>
-                    <Input id="si-email" type="email" required value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} />
+                    <Input id="si-email" name="email" type="email" autoComplete="username" inputMode="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} required value={signInEmail} onChange={(e) => setSignInEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="si-pw">Password</Label>
-                    <Input id="si-pw" type="password" required value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} />
+                    <Input id="si-pw" name="password" type="password" autoComplete="current-password" required value={signInPassword} onChange={(e) => setSignInPassword(e.target.value)} />
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? "Signing in..." : "Sign in"}
@@ -107,22 +107,22 @@ function AuthPage() {
               </TabsContent>
 
               <TabsContent value="signup">
-                <form onSubmit={handleSignUp} className="mt-4 space-y-4">
+                <form onSubmit={handleSignUp} className="mt-4 space-y-4" name="signup" method="post" action="#">
                   <div className="space-y-2">
                     <Label htmlFor="su-shop">Shop name</Label>
-                    <Input id="su-shop" required value={shopName} onChange={(e) => setShopName(e.target.value)} placeholder="e.g. Sri Sai Kirana" />
+                    <Input id="su-shop" name="organization" autoComplete="organization" required value={shopName} onChange={(e) => setShopName(e.target.value)} placeholder="e.g. Sri Sai Kirana" />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="su-name">Your name</Label>
-                    <Input id="su-name" required value={fullName} onChange={(e) => setFullName(e.target.value)} />
+                    <Input id="su-name" name="name" autoComplete="name" required value={fullName} onChange={(e) => setFullName(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="su-email">Email</Label>
-                    <Input id="su-email" type="email" required value={signUpEmail} onChange={(e) => setSignUpEmail(e.target.value)} />
+                    <Input id="su-email" name="email" type="email" autoComplete="email" inputMode="email" autoCapitalize="none" autoCorrect="off" spellCheck={false} required value={signUpEmail} onChange={(e) => setSignUpEmail(e.target.value)} />
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="su-pw">Password</Label>
-                    <Input id="su-pw" type="password" required minLength={6} value={signUpPassword} onChange={(e) => setSignUpPassword(e.target.value)} />
+                    <Input id="su-pw" name="new-password" type="password" autoComplete="new-password" required minLength={6} value={signUpPassword} onChange={(e) => setSignUpPassword(e.target.value)} />
                   </div>
                   <Button type="submit" className="w-full" disabled={loading}>
                     {loading ? "Creating..." : "Create account"}
