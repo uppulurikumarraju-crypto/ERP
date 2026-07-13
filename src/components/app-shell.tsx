@@ -22,6 +22,7 @@ import {
   ScanBarcode,
   Store,
   LogOut,
+  Settings,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -33,6 +34,7 @@ const navItems = [
   { title: "POS Billing", url: "/pos", icon: ScanBarcode },
   { title: "Products", url: "/products", icon: Package },
   { title: "Customers", url: "/customers", icon: Users },
+  { title: "Settings", url: "/settings", icon: Settings },
 ];
 
 function AppSidebar() {
