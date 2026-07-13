@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/table";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Search, Pencil, Trash2 } from "lucide-react";
+import { Plus, Search, Pencil, Trash2, MessageCircle } from "lucide-react";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/_authenticated/customers")({
@@ -69,6 +69,17 @@ function CustomersPage() {
     onSuccess: () => { toast.success("Deleted"); qc.invalidateQueries({ queryKey: ["customers"] }); },
     onError: (e: Error) => toast.error(e.message),
   });
+
+  function sendWhatsAppReminder(c: { name: string; mobile: string | null; pending_amount: number | string }) {
+    if (!c.mobile) { toast.error("No mobile number on file"); return; }
+    // Normalize to digits; assume India (+91) if 10 digits without country code
+    const digits = c.mobile.replace(/\D/g, "");
+    const phone = digits.length === 10 ? "91" + digits : digits;
+    const amount = Number(c.pending_amount).toFixed(2);
+    const msg = `Namaste ${c.name}, this is a friendly reminder from our store. Your pending balance is ₹${amount}. Kindly clear it at your convenience. Thank you!`;
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
 
   return (
     <div className="space-y-6">
@@ -159,6 +170,17 @@ function CustomersPage() {
                   ) : "—"}
                 </TableCell>
                 <TableCell className="text-right">
+                  {Number(c.pending_amount) > 0 && c.mobile && (
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      className="mr-1 text-emerald-700 border-emerald-300 hover:bg-emerald-50"
+                      onClick={() => sendWhatsAppReminder(c)}
+                      title="Send WhatsApp reminder"
+                    >
+                      <MessageCircle className="h-3.5 w-3.5" /> Remind
+                    </Button>
+                  )}
                   <Button size="icon" variant="ghost" onClick={() => {
                     setEditingId(c.id);
                     setForm({
