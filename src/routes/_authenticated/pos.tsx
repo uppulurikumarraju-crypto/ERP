@@ -114,7 +114,6 @@ function POSPage() {
       const { error: ie } = await supabase.from("sale_items").insert(items);
       if (ie) throw ie;
       if (paymentMethod === "credit" && customerId !== "walk-in") {
-        await supabase.rpc("noop_placeholder").then(() => {}).catch(() => {});
         const { data: cust } = await supabase.from("customers").select("pending_amount").eq("id", customerId).single();
         if (cust) {
           await supabase.from("customers")

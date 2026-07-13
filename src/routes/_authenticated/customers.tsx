@@ -70,6 +70,17 @@ function CustomersPage() {
     onError: (e: Error) => toast.error(e.message),
   });
 
+  function sendWhatsAppReminder(c: { name: string; mobile: string | null; pending_amount: number | string }) {
+    if (!c.mobile) { toast.error("No mobile number on file"); return; }
+    // Normalize to digits; assume India (+91) if 10 digits without country code
+    const digits = c.mobile.replace(/\D/g, "");
+    const phone = digits.length === 10 ? "91" + digits : digits;
+    const amount = Number(c.pending_amount).toFixed(2);
+    const msg = `Namaste ${c.name}, this is a friendly reminder from our store. Your pending balance is ₹${amount}. Kindly clear it at your convenience. Thank you!`;
+    const url = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex flex-wrap items-center justify-between gap-3">
