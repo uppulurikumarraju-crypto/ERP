@@ -133,3 +133,7 @@
     -webkit-font-smoothing: antialiased;
   }
 }
+
+#lovable-badge {
+  display: none !important;
+}
